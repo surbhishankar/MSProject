@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<script
+	src="https://code.jquery.com/jquery-3.1.1.js"
+	integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+	crossorigin="anonymous"></script>
+    <head>
+		<meta charset="utf-8"/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+		<style>
+			#myImage {
+				margin-left: 450px;
+				border: 1px solid black;
+				cursor: pointer;
+				box-shadow: 0 0 5px #ddd;
+				box-sizing: border-box;
+			}
+			#myContent {
+				margin-left: 500px;
+			}
+			h2 {
+				font-family: 'Oswald', sans-serif;
+				font-size: 1em;
+				font-weight: 100;
+				margin: 0 0 10px;
+				text-align: center;
+			}
+			h1 {
+				font-family: 'Oswald', sans-serif;
+				font-size: 2em;
+				font-weight: 200;
+				margin: 0 0 10px;
+				text-align: center;
+			}
+			.container {
+				width: 1200px;
+				margin: 0 auto;
+			}
+			#controls {
+				margin-top : 30px;
+			}
+			li {
+				display : inline-block;
+				padding : 5px;
+				border : 1px solid #ccc;
+				background-color : #eee;
+				cursor : pointer;
+			}
+			#play, #pause {
+				display : inline-block;
+				font-family: 'Oswald', sans-serif;
+				font-size: 1em;
+				padding : 5px;
+				cursor : pointer;
+				text-align: center;
+				margin: 0 0 10px;
+			}
+			#play {
+				margin-left: 550px;
+			}
+			.widthSet {
+				max-height: 300px;
+				align: center;
+			}
+			.heightSet {
+				max-height: 300px;
+			}
+		</style>
+        <script type="text/javascript">
+			var imagesData = [];
+			var indexImage = 0;
+			$(document).ready(function () {
+				$('#myImage').mousemove(
+					function (event) {
+						var x = event.clientX - $(this).offset().left;
+						var columnWidth = $('#myImage').outerWidth() / imagesData.length;
+						var column = Math.floor(x / columnWidth);
+						indexImage = column;
+						$('#myImage').attr('src', 'photos/CagePrisoners/' + imagesData[column].photo);
+						
+						$.each(imagesData[column], function(i){
+							$('#myContent').empty();
+							$('#myContent').append("<p><br><b> Datetime: " + imagesData[column].start + ", " + imagesData[column].time + "</b></a>");
+						});
+					}
+				);
+				
+				$('#myImage').click(function(event) {
+					var x = event.clientX - $(this).offset().left;
+					var columnWidth = $('#myImage').outerWidth() / imagesData.length;
+					var column = Math.floor(x / columnWidth);
+					
+					window.open(imagesData[column].content);
+				});
+				
+				$.ajax({
+					url: 'cageprisonersurl.json',
+					dataType: 'json',
+					success: function(data) {
+						imagesData = data;
+						$('#myImage').attr('src', 'photos/CagePrisoners/' + imagesData[0].photo);
+						slideImage(0);
+					}
+				});
+				console.log(imagesData);
+				var timeoutId;
+				var slideImage = function(step) {
+				if ( step == undefined ) step = 1;
+				clearTimeout ( timeoutId );
+				var indx = $('#myImage:visible').index('#myImage');
+
+				if ( step != 0 ) {
+				   $('#myImage:visible').show();
+				}
+				
+				indexImage = indexImage + step;
+				
+				if ( indexImage >= imagesData.length ) {
+					indexImage = 0;
+				} else if ( indexImage < 0 ) {
+					indexImage = imagesData.length - 1;
+				}
+				//If step == 0, we don't need to do any fadein our fadeout
+				if ( step != 0 ) {
+				   $('#myImage:eq(' + indx + ')').show();
+					timeoutId = setTimeout ( slideImage, 1000 );
+				}
+				
+				console.log(indexImage);
+				$('#myImage').attr('src', 'photos/CagePrisoners/' + imagesData[indexImage].photo);
+				$.each(imagesData[indexImage], function(i){
+							$('#myContent').empty();
+							$('#myContent').append("<p><br><b> Datetime: " + imagesData[indexImage].start + ", " + imagesData[indexImage].time + "</b></a>");
+					});
+				};
+				$('#play').click(function() {
+					slideImage(indexImage);
+					timeoutId = setInterval ( slideImage, 1000 );
+				});
+				$('#pause').click(function() {
+					clearInterval(timeoutId);
+				});
+		});  
+		</script>	
+    </head> 
+    <body>
+		<div class="container">
+			<h1>Image Slider</h1>
+			<h2>Swipe over the images to move through time</h2>
+			<h2>Click on an image to view the memento</h2>
+			<div>
+			<button type="button" id='play'>Play</button>
+			<button type="button" id='pause'>Pause</button>
+			</div>
+			<img id="myImage" class="widthSet"/>
+			<p id="myContent"></p>
+		</div>
+    </body>
+</html>

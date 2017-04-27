@@ -1,0 +1,1 @@
+[{"website": "http://www.amnesty.org/\n"}, {"website": "http://www.amnesty.org/\n"}, {"website": "http://www.amnesty.org/\n"}, {"website": "http://www.amnesty.org/\n"}, {"website": "https://www.amnesty.org/en/\n"}, {"website": "http://www.amnesty.org/\n"}, {"website": "https://www.amnesty.org/"}]
