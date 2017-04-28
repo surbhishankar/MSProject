@@ -3,7 +3,7 @@ Visualizing Thumbnails
 
 AN implementation based on the idea of visualizing versions of web archived pages through thumbnail representations. This work is for collections of Columbia University Libraries and New York Art Resources Consortium (NYARC). 
 
-![timeMap] (_Image_Grid/timeMap.PNG)
+![Screenshot] (_Image_Grid/timeMap.PNG)
 
 ###Creating JSON files
 
