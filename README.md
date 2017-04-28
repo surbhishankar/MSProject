@@ -3,8 +3,6 @@ Visualizing Thumbnails
 
 AN implementation based on the idea of visualizing versions of web archived pages through thumbnail representations. This work is for collections of Columbia University Libraries and New York Art Resources Consortium (NYARC). 
 
-![Screenshot] (_Image_Grid/timeMap.PNG)
-
 ###Creating JSON files
 
 To create JSON files, store all the URI-Rs of the mementos in a .txt file. This file will be input for urlscript.py file. Give a name for the output file where the JSON content is intended to be stored. Here are some example URIs.
